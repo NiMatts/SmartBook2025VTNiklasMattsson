@@ -6,11 +6,10 @@ namespace SmartBook.Core
     public static class BookHandler
     {
         public static bool changes = false;
-        public static List<Book> Books = new List<Book>(); 
-
-        public static bool GenerateBook()
+        public static List<Book> Books = new List<Book>();
+        public static bool GenerateBookFromMenu()
         {
-            Book book = null;
+
             Console.Write("Enter title: ");
             string title = Console.ReadLine();
             Console.Write("Enter author: ");
@@ -19,31 +18,45 @@ namespace SmartBook.Core
             string genre = Console.ReadLine();
 
             Console.WriteLine("Categories: 1=Hardcover|2=Paperback|3=Ebook|4=AudioBook|Q.exit");
-            Console.Write("Enter category: ");
+            Console.WriteLine("Enter category: ");
             int category = MenuOptions("1234");
+            if (CreateBook(category, title, author, genre, true, false))
+                Console.WriteLine("Book was generated succesfully");
+
+            return true;
+        }
+        public static void GenerateBookFromFile(int category, string title, string author, string genre, bool isavailable)
+        {
+            if (CreateBook(category, title, author, genre,isavailable, true))
+                Console.WriteLine("Book was generated succesfully");
+        }
+        private static bool CreateBook(int category, string title, string author, string genre,bool isavailable, bool fromFile)
+        {
+            Book book = null;
             try
             {
                 switch (category)
                 {
                     case 1:
-                        book = new Paperbacks(title, author, genre);
+                        book = new Paperbacks(title, author, genre, isavailable);
                         break;
                     case 2:
-                        book = new Hardcover(title, author, genre);
+                        book = new Hardcover(title, author, genre, isavailable);
                         break;
                     case 3:
-                        book = new EBook(title, author, genre);
+                        book = new EBook(title, author, genre, isavailable);
                         break;
                     case 4:
-                        book = new AudioBook(title, author, genre);
+                        book = new AudioBook(title, author, genre, isavailable);
                         break;
                     case 10:
+                        Console.WriteLine("exiting to main menu");
                         return false;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"{ex.Message}");
+                Console.WriteLine($"{ex.Message}. returning to main menu.");
                 return false;
             }
             if (book != null)
@@ -51,18 +64,19 @@ namespace SmartBook.Core
                 if (CheckForCopy(book))
                 {
                     AddBook(book);
+                    if(!fromFile)changes = true;// for saving changes to txt.file
                 }
             }
-
             return true;
         }
+
         private static bool CheckForCopy(Book book)
         {
             if(Books.Any(b => b.Title == book.Title)) return false;
             if(Books.Any(b => b.ISBN == book.ISBN)) return false;
             return true;
         }
-        public static void AddBook(Book book)
+        private static void AddBook(Book book)
         {
             Books.Add(book);
         }
@@ -71,7 +85,7 @@ namespace SmartBook.Core
             Console.WriteLine("Get book by: 1=Title|2=ISBN|Q.exit");
             Console.Write("Enter category: ");
             int category = MenuOptions("14");//1,4 is BookDataTypes
-            Console.Write($"Enter {(BookDataTypes)category}: ");
+            Console.Write($"Enter {(BookDataFields)category}: ");
             string input = Console.ReadLine();
             Book foundbook = null;
             
@@ -98,9 +112,11 @@ namespace SmartBook.Core
 
             if (foundbook != null)
             {
-                foundbook.ToString();
-                Console.Write(" :has been removed");
-                Books.Remove(foundbook); return true;
+                Console.Write($"{foundbook.ToString()}");
+                Console.WriteLine(" :has been removed");
+                Books.Remove(foundbook);
+                changes = true;// for saving changes to txt.file
+                return true;
             }
             else
             {
@@ -108,35 +124,109 @@ namespace SmartBook.Core
             }
             return false;
         }
-        
+
+        public static void FindBook()
+        {
+            var foundbooks = FindListBooks("Find");
+            if (foundbooks != null)
+            {
+                string menueoptions = "";
+                Console.WriteLine($"Found {foundbooks.Count} books 5 available for update");
+                for (int i = 0; i < foundbooks.Count; i++)
+                {
+                    
+                    if (i <= 4)
+                    {
+                        menueoptions = menueoptions + (i+1).ToString();
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine($"{i + 1}. {foundbooks[i].ToString()}");
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine($"{foundbooks[i].ToString()}");
+                    }
+                }
+                Console.ResetColor();
+                Console.WriteLine("Toggle isAvailable on green book by: number or exit: Q");
+                Console.WriteLine("Enter number or Q: ");
+                int category = MenuOptions(menueoptions);//menuoptions is max 5 found books.
+                if (category != 10)
+                {
+                    foundbooks[category - 1].IsAvailable = !foundbooks[category - 1].IsAvailable;
+                    changes = true;// for saving changes to txt.file
+                    Console.WriteLine($"updated {foundbooks[category - 1].ToString()}");
+                }
+                else
+                {
+                    Console.WriteLine("exiting");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No books could be found");
+            }
+        }
+
         public static void ListBooks()
         {
-            Console.WriteLine("List books by: 1=Title|2=Author|3=Genre|4=IsAvailable|Q.exit");
+            var foundbooks = FindListBooks("List");
+            if (foundbooks != null)
+            {
+                foreach (var book in foundbooks)
+                {
+                    Console.WriteLine(book.ToString());
+                }
+            }
+            else
+            {
+                Console.WriteLine("No books could be found");
+            }
+        }
+        private static List<Book> FindListBooks(string type)
+        {
+            Console.WriteLine($"{type} books by: 1=Title|2=Author|3=Genre|Q.exit");
             Console.Write("Enter category: ");
-            int category = MenuOptions("1235");//1,2,3,5 is BookDataTypes
-            Console.Write($"Enter {(BookDataTypes)category}: ");
-            string input = "";
-            if(category != 5)input = Console.ReadLine();
+            int category = MenuOptions("123");//1,2,3 is BookDataFields
+            
+            string input = null;
+            if (category != 5 && category != 10)
+            { 
+                Console.Write($"Enter {(BookDataFields)category} or leave empty for list by category: "); input = Console.ReadLine(); 
+            }
             List<Book> foundbooks = null;
             if (category == 1)
             {
-                if (input != null)
+                if (!string.IsNullOrWhiteSpace(input))
+                {
                     foundbooks = Books.Where(b => b.Title == input).ToList();
+                }
+                else
+                {
+                    foundbooks = Books.OrderBy(b => b.Title).ToList();
+                }
             }
             else if (category == 2)
             {
-                if (input != null)
+                if (!string.IsNullOrWhiteSpace(input))
+                {
                     foundbooks = Books.Where(b => b.Author == input).ToList();
+                }
+                else
+                {
+                    foundbooks = Books.OrderBy(b => b.Author).ToList();
+                }
             }
             else if (category == 3)
             {
-                if (input != null)
+                if (!string.IsNullOrWhiteSpace(input))
+                {
                     foundbooks = Books.Where(b => b.Genre == input).ToList();
-            }
-            else if (category == 5)
-            {
-                if (input != null)
-                    foundbooks = Books.Where(b => b.IsAvailable).ToList();
+                }
+                else
+                {
+                    foundbooks = Books.OrderBy(b => b.Genre).ToList();
+                }    
             }
             else if (category == 10)
             {
@@ -146,22 +236,27 @@ namespace SmartBook.Core
             {
                 Console.WriteLine("Menu error.");
             }
+
+            return foundbooks;
         }
         private static int MenuOptions(string options)
         {
             int category = 0;
-            while (!options.Contains(category.ToString()) && category != 10)
+            while ((category>options.Length || category == 0) && category != 10)
             {
-                ConsoleKeyInfo keyInfo = Console.ReadKey();
-                switch (keyInfo.Key)
+                ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                if (char.IsDigit(keyInfo.KeyChar))
                 {
-                    case ConsoleKey.D1: category = 1; break;
-                    case ConsoleKey.D2: category = 2; break;
-                    case ConsoleKey.D3: category = 3; break;
-                    case ConsoleKey.D4: category = 4; break;
-                    case ConsoleKey.D5: category = 5; break;
-                    case ConsoleKey.Q: category = 10; break;
+                    category = int.Parse(keyInfo.KeyChar.ToString());
                 }
+                else if (keyInfo.Key == ConsoleKey.Q)
+                {
+                    category = 10; // exit
+                }             
+            }
+            if (category != 10)
+            {
+                category = int.Parse(options[category-1].ToString());
             }
             return category;
         }

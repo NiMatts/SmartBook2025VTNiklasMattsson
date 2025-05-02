@@ -1,0 +1,72 @@
+[
+  {
+    "title": "The Silent Forest",
+    "author": "Lena Thompson",
+    "genre": "Mystery",
+    "mediatypeid": 1,
+    "isAvailable": true
+  },
+  {
+    "title": "Echoes of Tomorrow",
+    "author": "James Carter",
+    "genre": "Science Fiction",
+    "mediatypeid": 1,
+    "isAvailable": true
+  },
+  {
+    "title": "Whispers in the Wind",
+    "author": "Diana Brooks",
+    "genre": "Romance",
+    "mediatypeid": 2,
+    "isAvailable": true
+  },
+  {
+    "title": "Forgotten Realms",
+    "author": "Arthur Dean",
+    "genre": "Fantasy",
+    "mediatypeid": 4,
+    "isAvailable": false
+  },
+  {
+    "title": "The Last Light",
+    "author": "Emily Knight",
+    "genre": "Thriller",
+    "mediatypeid": 3,
+    "isAvailable": false
+  },
+  {
+    "title": "Parallel Lines",
+    "author": "Samuel Lee",
+    "genre": "Literary Fiction",
+    "mediatypeid": 3,
+    "isAvailable": true
+  },
+  {
+    "title": "Beyond the Horizon",
+    "author": "Nora Wells",
+    "genre": "Adventure",
+    "mediatypeid": 4,
+    "isAvailable": false
+  },
+  {
+    "title": "The Glass Mirror",
+    "author": "Olivia Grant",
+    "genre": "Horror",
+    "mediatypeid": 2,
+    "isAvailable": true
+  },
+  {
+    "title": "Timeless",
+    "author": "Grace Edwards",
+    "genre": "Historical Fiction",
+    "mediatypeid": 1,
+    "isAvailable": true
+  },
+  {
+    "title": "s",
+    "author": "s",
+    "genre": "s",
+    "mediatypeid": 3,
+    "isAvailable": true
+  }
+]

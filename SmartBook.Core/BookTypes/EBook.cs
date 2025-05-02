@@ -17,5 +17,10 @@ namespace SmartBook.Core.BookTypes
             FilePath = $"Library/example/book/{title}";
             //Shelf = shelf;
         }
+        public EBook(string title, string author, string genre, bool isavailable) : base(title, author, genre, MEDIATYPEID, isavailable)
+        {
+            FilePath = $"Library/example/book/{title}";
+            //Shelf = shelf;
+        }
     }
 }

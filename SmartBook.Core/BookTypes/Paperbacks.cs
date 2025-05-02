@@ -16,5 +16,10 @@ namespace SmartBook.Core.BookTypes
         { 
             Section = $"{genre.ToUpper()[0]}{author.ToUpper()[0]}";
         }
+
+        public Paperbacks(string title, string author, string genre, bool isavailable) : base(title, author, genre, MEDIATYPEID, isavailable)
+        {
+            Section = $"{genre.ToUpper()[0]}{author.ToUpper()[0]}";
+        }
     }
 }

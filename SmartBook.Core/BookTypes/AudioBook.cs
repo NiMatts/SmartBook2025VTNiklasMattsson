@@ -13,8 +13,11 @@ namespace SmartBook.Core.BookTypes
 
         public AudioBook(string title, string author, string genre) : base(title, author, genre, MEDIATYPEID)
         {
-            FilePath = $"Library/example/audio/{title}";
-            //Shelf = shelf;
+            FilePath = $"Library/example/audio/{author}/{title}";
+        }
+        public AudioBook(string title, string author, string genre, bool isavailable) : base(title, author, genre, MEDIATYPEID, isavailable)
+        {
+            FilePath = $"Library/example/audio/{author}/{title}";
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SmartBook.Core
 {
-    public enum BookDataTypes
+    public enum BookDataFields
     {
         Title = 1,
         Author = 2,

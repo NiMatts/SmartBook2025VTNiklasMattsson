@@ -16,13 +16,23 @@ namespace SmartBook.Core.BookTypes
         private string _genre;
         public int MediaTypeId { get; }
         public string ISBN { get; }
-        public bool IsAvailable { get; set; } = true;
+        public bool IsAvailable { get; set; }
         public Book(string title, string author, string genre, int mediatypeid) { 
             Title = title;
             Author = author;
             Genre = genre;
             MediaTypeId = mediatypeid;
             ISBN = GenerateISBN(title, author, genre);
+            IsAvailable = true;
+        }
+        public Book(string title, string author, string genre, int mediatypeid, bool isavailable)
+        {
+            Title = title;
+            Author = author;
+            Genre = genre;
+            MediaTypeId = mediatypeid;
+            ISBN = GenerateISBN(title, author, genre);
+            IsAvailable = isavailable;
         }
         public string Title
         {
@@ -77,7 +87,7 @@ namespace SmartBook.Core.BookTypes
         }
         public override string ToString()
         {
-            return $"\"{Title}\" by {Author} | Genre: {Genre} | MediaType: {(MediaTypes)MediaTypeId} | Available: {IsAvailable} | ISBN: {ISBN}";
+            return $"\"{Title}\" by {Author} | Genre: {Genre} {Environment.NewLine} MediaType: {(MediaTypes)MediaTypeId} | Available: {IsAvailable} | ISBN: {ISBN}{Environment.NewLine}";
         }
     }
 }

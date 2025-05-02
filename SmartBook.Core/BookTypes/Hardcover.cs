@@ -10,12 +10,15 @@ namespace SmartBook.Core.BookTypes
     {
         private const int MEDIATYPEID = 2; //Hardcover id
         public string Section { get; set; }
-        public char Shelf { get; set; }
+
         public Hardcover(string title, string author, string genre) : base(title, author, genre, MEDIATYPEID)
         {
-            Section = genre;
-            Shelf = author[0];
-            //Shelf = shelf;
+            Section = $"{genre.ToUpper()[0]}{author.ToUpper()[0]}";
+        }
+
+        public Hardcover(string title, string author, string genre, bool isavailable) : base(title, author, genre, MEDIATYPEID, isavailable)
+        {
+            Section = $"{genre.ToUpper()[0]}{author.ToUpper()[0]}";
         }
     }
 }
