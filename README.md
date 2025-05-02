@@ -9,5 +9,7 @@ Enklare biblotekts program där funktionalliteten kan beskrivas som:
 
 Visa begränsningar kan förekomma i interaktion med ISBN då den är lite slarvigt genererad och inte manuellt inskriven.
 Idagsläget ser jag inga problem med det men om begränsningen på dubbleter skulle lyftas så skulle ISBN kunna börja ge oönskvärt förenklade resultat.
+
 Programmets funktionallitet navigeras med siffror alternativt avslustas med Q.
+
 Jag har testat att visa delar av skapandet av nya böcker fungerar som jag vill. Specifikt att en ny bok genereras och att en utav mina enums ger korrekt värde.
