@@ -131,7 +131,7 @@ namespace SmartBook.Core
             if (foundbooks != null)
             {
                 string menueoptions = "";
-                Console.WriteLine($"Found {foundbooks.Count} books 5 available for update");
+                Console.WriteLine($"Found {foundbooks.Count} books");
                 for (int i = 0; i < foundbooks.Count; i++)
                 {
                     
