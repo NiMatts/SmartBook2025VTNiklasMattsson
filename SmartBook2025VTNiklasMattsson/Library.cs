@@ -34,7 +34,7 @@ internal class Library
             Console.WriteLine("2. Remove book");
             Console.WriteLine("3. List books");
             Console.WriteLine("4. Find book/change availabilty");
-            Console.WriteLine("5. exit program.");
+            Console.WriteLine("Q. exit program.");
             string menuChoice = Console.ReadLine();
             if (menuChoice != null)
             {
@@ -52,11 +52,11 @@ internal class Library
                     case "4":
                         BookHandler.FindBook();
                         break;
-                    case "5":
+                    case "Q":
                         isAlive = false;
                         return false;
                     default:
-                        Console.WriteLine("felaktig input.(1-5)");
+                        Console.WriteLine("felaktig input.(1-4 or Q to exit)");
                         break;
                 }
             }
