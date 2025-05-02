@@ -21,9 +21,16 @@ namespace SmartBook.Core
             Console.WriteLine("Enter category: ");
             int category = MenuOptions("1234");
             if (CreateBook(category, title, author, genre, true, false))
+            {
                 Console.WriteLine("Book was generated succesfully");
+            }
+            else
+            {
+                Console.WriteLine("Book was not generated succesfully");
+            }
 
-            return true;
+
+                return true;
         }
         public static void GenerateBookFromFile(int category, string title, string author, string genre, bool isavailable)
         {
@@ -65,6 +72,11 @@ namespace SmartBook.Core
                 {
                     AddBook(book);
                     if(!fromFile)changes = true;// for saving changes to txt.file
+                }
+                else
+                {
+                    Console.WriteLine($"Book with same title allready exists.");
+                    return false;
                 }
             }
             return true;
